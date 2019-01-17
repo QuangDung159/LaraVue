@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -16,6 +15,9 @@ window.Vue = require('vue');
  */
 
 Vue.component('example', require('./components/Example.vue'));
+
+// Khai báo component có tên là my-component có nội dung trong MyComponent.vue
+Vue.component('my-component', require('./components/MyComponent.vue'));
 
 const app = new Vue({
     el: '#app'
