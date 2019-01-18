@@ -10,6 +10,9 @@
     {{-- <example> : define at public/js/app.js --}}
     <example></example>
     <my-component></my-component>
+    <conditional-redering></conditional-redering>
+    <list-rendering></list-rendering>
+    <user-dashboard></user-dashboard>
 </div>
 <script src="/js/app.js"></script>
 </body>

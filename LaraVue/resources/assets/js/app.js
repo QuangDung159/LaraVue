@@ -19,6 +19,12 @@ Vue.component('example', require('./components/Example.vue'));
 // Khai báo component có tên là my-component có nội dung trong MyComponent.vue
 Vue.component('my-component', require('./components/MyComponent.vue'));
 
+Vue.component("conditional-redering", require("./components/ConditionalRedering.vue"));
+
+Vue.component("list-rendering", require("./components/ListRendering.vue"));
+
+Vue.component("user-dashboard", require("./components/UserDashboard.vue"));
+
 const app = new Vue({
     el: '#app'
 });
