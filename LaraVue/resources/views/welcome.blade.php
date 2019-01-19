@@ -13,6 +13,7 @@
     <conditional-redering></conditional-redering>
     <list-rendering></list-rendering>
     <user-dashboard></user-dashboard>
+    <life-cycle></life-cycle>
 </div>
 <script src="/js/app.js"></script>
 </body>

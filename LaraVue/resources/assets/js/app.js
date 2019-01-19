@@ -25,6 +25,8 @@ Vue.component("list-rendering", require("./components/ListRendering.vue"));
 
 Vue.component("user-dashboard", require("./components/UserDashboard.vue"));
 
+Vue.component("life-cycle", require("./components/LifeCycle.vue"));
+
 const app = new Vue({
     el: '#app'
 });
