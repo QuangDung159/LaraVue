@@ -27,6 +27,13 @@ Vue.component("user-dashboard", require("./components/UserDashboard.vue"));
 
 Vue.component("life-cycle", require("./components/LifeCycle.vue"));
 
+Vue.component("class-binding", require("./components/ClassBinding.vue"));
+
+Vue.component("form-binding", require("./components/FormBinding.vue"));
+
+Vue.component("parent", require("./components/Parent.vue"));
+
+Vue.component("api-calling", require("./components/APICalling.vue"));
 const app = new Vue({
     el: '#app'
 });

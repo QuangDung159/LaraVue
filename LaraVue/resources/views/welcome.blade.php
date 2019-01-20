@@ -14,6 +14,13 @@
     <list-rendering></list-rendering>
     <user-dashboard></user-dashboard>
     <life-cycle></life-cycle>
+    <class-binding></class-binding>
+    <hr>
+    <form-binding></form-binding>
+    <hr>
+    <parent></parent>
+    <hr>
+    <api-calling></api-calling>
 </div>
 <script src="/js/app.js"></script>
 </body>
