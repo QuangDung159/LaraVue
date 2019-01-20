@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use http\Env\Response;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use App\Product;
 use Illuminate\Support\Facades\Log;
@@ -39,18 +39,6 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         Log::info("store");
-//        $this->validate($request,
-//            [
-//                "name" => "required|min:5",
-//                "price" => "required"
-//            ]);
-//        Product::create([
-//            "name" => $request->input("name"),
-//            "price" => $request->input("price")
-//        ]);
-//        return response([
-//            "result" => "success"
-//        ], 200);
         $this->validate($request, [
             'name' => 'required|min:5',
             'price' => 'required',
@@ -96,6 +84,18 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, [
+            'name' => 'required|min:5',
+            'price' => 'required',
+        ]);
+
+        $product = Product::find($id);
+        $product->name = $request->input("name");
+        $product->price = $request->input("price");
+        $product->save();
+        return response([
+            "result" => "success"
+        ], 200);
     }
 
     /**
@@ -107,5 +107,11 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+        $product = Product::find($id);
+        $product->delete();
+        $product->save();
+        return response([
+            "result" => "success"
+        ], 200);
     }
 }

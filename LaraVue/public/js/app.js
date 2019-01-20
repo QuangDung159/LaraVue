@@ -46404,53 +46404,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -46462,21 +46415,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 price: 0
             },
             errors: [],
-            list_product: []
+            list_products: []
         };
+    },
+    created: function created() {
+        this.getListProducts();
     },
 
     methods: {
+        formatDate: function formatDate(d) {
+            var dformat = [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('/') + ' ' + [d.getHours(), d.getMinutes(), d.getSeconds()].join(':');
+            return dformat;
+        },
         createProduct: function createProduct() {
             var _this = this;
 
+            this.errors = [];
             axios.post('/products', { name: this.product.name, price: this.product.price }).then(function (response) {
                 console.log(response.data.result);
-                _this.list_product.push({
-                    id: _this.list_product.length + 1,
+                _this.list_products.push({
+                    id: _this.list_products.length + 1,
                     name: _this.product.name,
                     price: _this.product.price,
-                    created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format("YYYY-MM-DD HH:mm:ss")
+                    created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD HH:mm:ss'),
+                    isEdit: false
                 });
             }).catch(function (error) {
                 _this.errors = [];
@@ -46484,28 +46446,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.errors.push(error.response.data.errors.name);
                 }
                 if (error.response.data.errors.price) {
-                    _this.errors.push(error.response.data.errors.name);
+                    _this.errors.push(error.response.data.errors.price);
                 }
             });
         },
-        getListProduct: function getListProduct() {
+        getListProducts: function getListProducts() {
             var _this2 = this;
 
-            axios.get("/products").then(function (response) {
-                _this2.list_product = response.data;
+            axios.get('/products').then(function (response) {
+                _this2.list_products = response.data;
+                _this2.list_products.forEach(function (item) {
+                    Vue.set(item, 'isEdit', false);
+                });
             }).catch(function (error) {
-                _this2.errors = [];
-                if (error.response.data.errors.name) {
-                    _this2.errors.push(error.response.data.errors.name);
-                }
-                if (error.response.data.errors.price) {
-                    _this2.errors.push(error.response.data.errors.name);
-                }
+                _this2.errors = error.response.data.errors.name;
+            });
+        },
+        updateProduct: function updateProduct(product) {
+            var _this3 = this;
+
+            axios.put('/products/' + product.id, { name: product.name, price: product.price }).then(function (response) {
+                console.log(response.data.result);
+                product.isEdit = false;
+            }).catch(function (error) {
+                _this3.errors = error.response.data.errors.name;
+            });
+        },
+        deleteProduct: function deleteProduct(product, index) {
+            var _this4 = this;
+
+            axios.delete('/products/' + product.id).then(function (response) {
+                console.log(response.data.result);
+                _this4.list_products.splice(index, 1);
+            }).catch(function (error) {
+                _this4.errors = error.response.data.errors.name;
             });
         }
-    },
-    created: function created() {
-        this.getListProduct();
     }
 });
 
@@ -46525,7 +46501,7 @@ var render = function() {
           [
             _vm._l(_vm.errors, function(err) {
               return _c("span", [
-                _vm._v("\n           " + _vm._s(err) + "\n       ")
+                _vm._v("\n            " + _vm._s(err) + "\n        ")
               ])
             }),
             _vm._v(" "),
@@ -46536,7 +46512,7 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "create-form" }, [
-      _c("div", { staticClass: "product-name-input" }, [
+      _c("div", { staticClass: "product-name-input form-group" }, [
         _c("input", {
           directives: [
             {
@@ -46546,7 +46522,8 @@ var render = function() {
               expression: "product.name"
             }
           ],
-          attrs: { type: "text", name: "name" },
+          staticClass: "form-control",
+          attrs: { type: "text" },
           domProps: { value: _vm.product.name },
           on: {
             input: function($event) {
@@ -46559,7 +46536,7 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "product-name-input" }, [
+      _c("div", { staticClass: "product-name-input form-group" }, [
         _c("input", {
           directives: [
             {
@@ -46570,7 +46547,8 @@ var render = function() {
               modifiers: { number: true }
             }
           ],
-          attrs: { type: "text", name: "price" },
+          staticClass: "form-control",
+          attrs: { type: "text" },
           domProps: { value: _vm.product.price },
           on: {
             input: function($event) {
@@ -46586,34 +46564,160 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "button-create" }, [
-        _c("button", { on: { click: _vm.createProduct } }, [_vm._v("Create")])
+      _c("div", { staticClass: "button-create form-group" }, [
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", on: { click: _vm.createProduct } },
+          [_vm._v("Create")]
+        )
       ])
     ]),
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
-    _c("div", { staticClass: "list-product" }, [
-      _c("h2", [_vm._v("List Product")]),
+    _c("div", { staticClass: "list-products" }, [
+      _c("h2", [_vm._v("LIST PRODUCT")]),
       _vm._v(" "),
       _c("div", { staticClass: "product-table" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.list_product, function(product) {
-            return _c("tr", [
-              _c("td", [_vm._v(_vm._s(product.id))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.name))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.price))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.created_at))])
-            ])
-          }),
-          0
-        )
+        _c("table", { staticClass: "table table-bordered" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.list_products, function(prod, index) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(prod.id))]),
+                _vm._v(" "),
+                !prod.isEdit
+                  ? _c("td", [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(prod.name) +
+                          "\n                    "
+                      )
+                    ])
+                  : _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: prod.name,
+                            expression: "prod.name"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text" },
+                        domProps: { value: prod.name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(prod, "name", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                _vm._v(" "),
+                !prod.isEdit
+                  ? _c("td", [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(prod.price) +
+                          "\n                    "
+                      )
+                    ])
+                  : _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model.number",
+                            value: prod.price,
+                            expression: "prod.price",
+                            modifiers: { number: true }
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text" },
+                        domProps: { value: prod.price },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(prod, "price", _vm._n($event.target.value))
+                          },
+                          blur: function($event) {
+                            _vm.$forceUpdate()
+                          }
+                        }
+                      })
+                    ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(prod.created_at))]),
+                _vm._v(" "),
+                !prod.isEdit
+                  ? _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          on: {
+                            click: function($event) {
+                              prod.isEdit = true
+                            }
+                          }
+                        },
+                        [_vm._v("Edit")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              _vm.deleteProduct(prod, index)
+                            }
+                          }
+                        },
+                        [_vm._v("Delete")]
+                      )
+                    ])
+                  : _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          on: {
+                            click: function($event) {
+                              _vm.updateProduct(prod)
+                            }
+                          }
+                        },
+                        [_vm._v("Save")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              prod.isEdit = false
+                            }
+                          }
+                        },
+                        [_vm._v("Cancel")]
+                      )
+                    ])
+              ])
+            }),
+            0
+          )
+        ])
       ])
     ])
   ])
@@ -46631,7 +46735,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Price")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Data Created")])
+        _c("th", [_vm._v("Date created")]),
+        _vm._v(" "),
+        _c("th")
       ])
     ])
   }
