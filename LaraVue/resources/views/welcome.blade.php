@@ -21,6 +21,8 @@
     <parent></parent>
     <hr>
     <api-calling></api-calling>
+    <hr>
+    <user></user>
 </div>
 <script src="/js/app.js"></script>
 </body>

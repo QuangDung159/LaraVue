@@ -34,6 +34,8 @@ Vue.component("form-binding", require("./components/FormBinding.vue"));
 Vue.component("parent", require("./components/Parent.vue"));
 
 Vue.component("api-calling", require("./components/APICalling.vue"));
+
+Vue.component("user", require("./components/User.vue"));
 const app = new Vue({
     el: '#app'
 });
